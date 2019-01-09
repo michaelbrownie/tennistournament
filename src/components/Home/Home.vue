@@ -1,20 +1,28 @@
 <template>
 <b-container class="home-container">
     <b-row>
-    <b-card title="Tennistoernooi"
+    <b-card title="Tennistournament"
+    sub-title="6,8,12,16 players"
           img-src="https://wedstrijd.tips/wp-content/uploads/2018/01/weimbledon.png"
           img-alt="Image"
           img-top
           tag="article"
           style="max-width: 40%; margin-left: 30%;"
           class="mb-2 card">
-          <b-form-input v-model="newPlayer"
-                  type="text"
-                  placeholder="Enter your name">
-                  </b-form-input>
-                  <b-button v-on:click="addPlayer">Add player!</b-button>
+          <b-input-group>
+            <b-form-input v-model="newPlayer"
+              type="text"
+              placeholder="Enter player">
+            </b-form-input>
+            <b-input-group-append>
+              <b-button v-on:click="addPlayer">Add player!</b-button>
+            </b-input-group-append>
+            </b-input-group>
+
           <b-list-group v-for="player in playerList">
-            <b-list-group-item>{{player}}</b-list-group-item>
+            <b-list-group-item>{{player.name}} 
+            <strong class="float-right delete-player" v-on:click="deletePlayer(player.id)">X</strong>
+            </b-list-group-item>
           </b-list-group>
 
           <b-card-footer style="margin-top: 20px;"><b-button v-on:click="startTournament"
@@ -32,19 +40,33 @@ export default {
   data () {
     return {
       players: [],
+      lastid: 1,
+      showStartButton: false,
       newPlayer: '',
     }
   },
     methods: {
       addPlayer() {
         if (this.newPlayer.length > 0){
-          this.players.push(this.newPlayer);
+          this.players.push({name: this.newPlayer, id: this.lastid});
           this.newPlayer = '';
+          this.lastid++;
+        }
+      },
+      deletePlayer(id){
+        for(var i = 0; i < this.players.length; i++){
+          if (this.players[i].id === id)
+            this.players.splice(i,1)
         }
       },
       startTournament(){
-        TournamentHandler.addPlayers(this.players);
-        this.$router.push('/poule');
+        let pcount = this.players.length;
+        if (pcount === 6 || pcount === 8 || pcount === 12 || pcount === 16){
+          TournamentHandler.generatePoules(this.players);
+        }
+        else{
+          alert('Tournament has to have 6, 8, 12, 16 players');
+        }
       }
     },
     mounted() {
@@ -62,6 +84,14 @@ export default {
 <style scoped>
 .home-container{
   padding-top: 30px;
+}
+
+.delete-player{
+  cursor: pointer;
+}
+
+.delete-player:hover{
+  color: red;
 }
 
 .card {

@@ -1,7 +1,31 @@
 <template>
 <b-container class="home-container">
-    <b-row>
-    </b-row>
+  <b-row v-for="poule in poules">
+    <b-card cols="6" :title="'Stand poule ' + poule.id"
+          tag="article"
+          class="mb-2 card">
+      <b-list-group v-for="player in poule.players">
+        <b-list-group-item>{{player.name}}</b-list-group-item>
+      </b-list-group>
+    </b-card>
+
+    <b-card cols="6" :title="'Wedstrijden poule ' + poule.id"
+          tag="article"
+          class="mb-2 card">
+          <table class="table">
+            <thead><tr><th colspan="2">Home</th><th colspan="2">Away</th></tr></thead>
+            <tbody v-for="match in poule.matches">
+              <tr>
+                <td>{{match.home_name}}</td>
+                <td><b-form-input v-model="match.home_score" type="number"></b-form-input></td>
+                <td>{{match.away_name}}</td>
+                <td><b-form-input v-model="match.away_score" type="number"></b-form-input></td>
+                <td><b-button v-on:click="savescore(match.id)" variant="primary">Save</b-button></td>
+              </tr>
+            </tbody>
+          </table>
+    </b-card>
+  </b-row>
 </b-container>
 </template>
 
@@ -16,20 +40,22 @@ export default {
     }
   },
     methods: {
-      addResult() {
+      savescore(id) {
+        for (var i = 0; i < this.poules.length; i++){
+          for (var j = 0; j < this.poules[i].matches.length; j++){
+            if(this.poules[i].matches[j].id === id){
+              alert(this.poules[i].matches[j].home_score)
+            }
+          }
+        }
           
       },
       startFinals(){
-        //TournamentHandler.addPlayers(this.players)
+        
       }
     },
     mounted() {
-      console.log(TournamentHandler.getPoules())
-    },
-    computed: {
-      playerList() {
-        return this.players
-      }
+      this.poules = JSON.parse(localStorage.getItem('poules'));
     }
 }
 </script>
