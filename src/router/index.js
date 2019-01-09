@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-//import Home from '@/components/Home/Home' // Home base page
 import Home from '../components/Home/Home'
-//import Community from '@/components/Community/Community' // Community base page
+import Poule from '../components/Poule/Poule'
 
 
 Vue.use(Router)
@@ -15,6 +14,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/poule',
+      name: 'Poule',
+      component: Poule
     }
   ]
 })

@@ -20,5 +20,8 @@
     font-family: 'Montserrat', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
+  body{
+    background-color: #DDD;
+  }
 
 </style>
