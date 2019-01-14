@@ -4,42 +4,57 @@
     <ul class="round round-2" v-if="quarterfinals !== undefined">
         <li class="spacer">&nbsp;</li>
         
-        <li class="game game-top winner">Lousville <b-form-input type="number"></b-form-input></li>
+        <li class="game game-top winner">{{quarterfinals[0].home_player.name}} 
+            <b-form-input type="number" v-model="quarterfinals[0].home_score" v-on:change="updateScore(1)"></b-form-input></li>
         <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom ">Colo St <b-form-input type="number"></b-form-input></li>
+        <li class="game game-bottom ">{{quarterfinals[0].away_player.name}} 
+            <b-form-input type="number" v-model="quarterfinals[0].away_score" v-on:change="updateScore(1)"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
         
-        <li class="game game-top winner">Oregon <b-form-input type="number"></b-form-input></li>
+        <li class="game game-top winner">{{quarterfinals[1].home_player.name}} 
+            <b-form-input type="number" v-model="quarterfinals[1].home_score" v-on:change="updateScore(1)"></b-form-input></li>
         <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom ">Saint Louis <b-form-input type="number"></b-form-input></li>
+        <li class="game game-bottom ">{{quarterfinals[1].away_player.name}} 
+            <b-form-input type="number" v-model="quarterfinals[1].away_score" v-on:change="updateScore(1)"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
         
-        <li class="game game-top ">Memphis <b-form-input type="number"></b-form-input></li>
+        <li class="game game-top ">{{quarterfinals[2].home_player.name}} 
+            <b-form-input type="number" v-model="quarterfinals[2].home_score" v-on:change="updateScore(1)"></b-form-input></li>
         <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom winner">Mich St <b-form-input type="number"></b-form-input></li>
+        <li class="game game-bottom ">{{quarterfinals[2].away_player.name}} 
+            <b-form-input type="number" v-model="quarterfinals[2].away_score" v-on:change="updateScore(1)"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
         
-        <li class="game game-top ">Creighton <b-form-input type="number"></b-form-input></li>
+        <li class="game game-top ">{{quarterfinals[3].home_player.name}} 
+            <b-form-input type="number" v-model="quarterfinals[3].home_score" v-on:change="updateScore(1)"></b-form-input></li>
         <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom winner">Duke <b-form-input type="number"></b-form-input></li>
+        <li class="game game-bottom ">{{quarterfinals[3].away_player.name}} 
+            <b-form-input type="number" v-model="quarterfinals[3].away_score" v-on:change="updateScore(1)"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
     </ul>
     <ul class="round round-3">
         <li class="spacer">&nbsp;</li>
         
-        <li class="game game-top winner">{{semifinals[0].home_player.name}} <b-form-input type="number"></b-form-input></li>
+        <li class="game game-top winner">{{semifinals[0].home_player.name}} 
+            <b-form-input type="number" v-model="semifinals[0].home_score" v-on:change="updateScore(0)"></b-form-input>
+        </li>
         <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom ">{{semifinals[0].away_player.name}} <b-form-input type="number"></b-form-input></li>
+        <li class="game game-bottom ">{{semifinals[0].away_player.name}} 
+            <b-form-input type="number" v-model="semifinals[0].away_score" v-on:change="updateScore(0)"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
         
-        <li class="game game-top ">{{semifinals[1].home_player.name}} <b-form-input type="number"></b-form-input></li>
+        <li class="game game-top ">{{semifinals[1].home_player.name}} 
+            <b-form-input type="number" v-model="semifinals[1].home_score" v-on:change="updateScore(1)"></b-form-input>
+        </li>
         <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom winner">{{semifinals[1].away_player.name}} <b-form-input type="number"></b-form-input></li>
+        <li class="game game-bottom winner">{{semifinals[1].away_player.name}} 
+            <b-form-input type="number" v-model="semifinals[1].away_score" v-on:change="updateScore(1)"></b-form-input>
+        </li>
 
         <li class="spacer">&nbsp;</li>
     </ul>
@@ -48,7 +63,7 @@
         
         <li class="game game-top winner">{{final.home}} <b-form-input type="number"></b-form-input></li>
         <li class="game game-spacer">&nbsp;</li>
-        <li class="game game-bottom ">{{final.home}} <b-form-input type="number"></b-form-input></li>
+        <li class="game game-bottom ">{{final.away}} <b-form-input type="number"></b-form-input></li>
         
         <li class="spacer">&nbsp;</li>
     </ul>       
@@ -64,11 +79,31 @@ export default {
   data () {
     return {
         quarterfinals: undefined,
-        semifinals: undefined,
+        semifinals: [{home_player: {}, away_player: {}, home_score: 0, away_score: 0}, {home_player: {}, away_player: {}, home_score: 0, away_score: 0}],
         final: {home: '', away: ''}
     }
   },
     methods: {
+        updateScore(index){
+            if (TournamentHandler.validateScore(this.semifinals[index])){
+                if (index === 0){
+                    if (this.semifinals[index].home_score > this.semifinals[index].away_score){
+                        this.final.home = this.semifinals[index].home_player.name;
+                    }
+                    else{
+                        this.final.home = this.semifinals[index].away_player.name;
+                    }
+                }
+                else{
+                    if (this.semifinals[index].home_score > this.semifinals[index].away_score){
+                        this.final.away = this.semifinals[index].home_player.name;
+                    }
+                    else{
+                        this.final.away = this.semifinals[index].away_player.name;
+                    }
+                }
+            }
+        }
     },
     mounted() {
         if (TournamentHandler.getFinals().length > 2){
@@ -77,6 +112,7 @@ export default {
         else{
             this.semifinals = TournamentHandler.getFinals();
         }
+        console.log(this.quarterfinals);
     }
 }
 </script>
