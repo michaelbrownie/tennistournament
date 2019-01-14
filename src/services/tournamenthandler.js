@@ -104,16 +104,16 @@ export default {
 
       if (this.poules.length === 4){
         // Quarter finals
-        this.finals.push({home_player: this.poules[0].players[0], away_player: this.poules[1].players[1]});
-        this.finals.push({home_player: this.poules[0].players[1], away_player: this.poules[1].players[0]});
+        this.finals.push({home_player: this.poules[0].players[0], away_player: this.poules[1].players[1], home_score: 0, away_score: 0});
+        this.finals.push({home_player: this.poules[0].players[1], away_player: this.poules[1].players[0], home_score: 0, away_score: 0});
 
-        this.finals.push({home_player: this.poules[2].players[0], away_player: this.poules[3].players[1]});
-        this.finals.push({home_player: this.poules[2].players[1], away_player: this.poules[3].players[0]});
+        this.finals.push({home_player: this.poules[2].players[0], away_player: this.poules[3].players[1], home_score: 0, away_score: 0});
+        this.finals.push({home_player: this.poules[2].players[1], away_player: this.poules[3].players[0], home_score: 0, away_score: 0});
       }
       else{
         // Half finals
-        this.finals.push({home_player: this.poules[0].players[0], away_player: this.poules[1].players[1]});
-        this.finals.push({home_player: this.poules[0].players[1], away_player: this.poules[1].players[0]});
+        this.finals.push({home_player: this.poules[0].players[0], away_player: this.poules[1].players[1], home_score: 0, away_score: 0});
+        this.finals.push({home_player: this.poules[0].players[1], away_player: this.poules[1].players[0], home_score: 0, away_score: 0});
       }
 
       // Set finals
