@@ -48,7 +48,7 @@ export default {
     methods: {
       addPlayer() {
         if (this.newPlayer.length > 0){
-          this.players.push({name: this.newPlayer, id: this.lastid});
+          this.players.push({name: this.newPlayer, id: this.lastid, points: 0});
           this.newPlayer = '';
           this.lastid++;
         }
