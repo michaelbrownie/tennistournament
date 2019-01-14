@@ -62,6 +62,11 @@ export default {
             poule.players[tmp.poule_index].points -= 3;
           }
 
+          // Same winner, do nothing
+          if (tmp.id === match.winner.id){
+            return;
+          }
+
           // Add points to winner
           poule.players[match.winner.poule_index].points += 3;
 
