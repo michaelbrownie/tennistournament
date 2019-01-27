@@ -5,34 +5,34 @@
         <li class="spacer">&nbsp;</li>
         
         <li class="game game-top winner">{{quarterfinals[0].home_player.name}} 
-            <b-form-input type="number" v-model="quarterfinals[0].home_score" v-on:change="updateScore(1)"></b-form-input></li>
+            <b-form-input type="number" v-model="quarterfinals[0].home_score" v-on:change="updateScore(0, 'quarter')"></b-form-input></li>
         <li class="game game-spacer">&nbsp;</li>
         <li class="game game-bottom ">{{quarterfinals[0].away_player.name}} 
-            <b-form-input type="number" v-model="quarterfinals[0].away_score" v-on:change="updateScore(1)"></b-form-input></li>
+            <b-form-input type="number" v-model="quarterfinals[0].away_score" v-on:change="updateScore(0, 'quarter')"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
         
         <li class="game game-top winner">{{quarterfinals[1].home_player.name}} 
-            <b-form-input type="number" v-model="quarterfinals[1].home_score" v-on:change="updateScore(1)"></b-form-input></li>
+            <b-form-input type="number" v-model="quarterfinals[1].home_score" v-on:change="updateScore(1, 'quarter')"></b-form-input></li>
         <li class="game game-spacer">&nbsp;</li>
         <li class="game game-bottom ">{{quarterfinals[1].away_player.name}} 
-            <b-form-input type="number" v-model="quarterfinals[1].away_score" v-on:change="updateScore(1)"></b-form-input></li>
+            <b-form-input type="number" v-model="quarterfinals[1].away_score" v-on:change="updateScore(1, 'quarter')"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
         
         <li class="game game-top ">{{quarterfinals[2].home_player.name}} 
-            <b-form-input type="number" v-model="quarterfinals[2].home_score" v-on:change="updateScore(1)"></b-form-input></li>
+            <b-form-input type="number" v-model="quarterfinals[2].home_score" v-on:change="updateScore(2, 'quarter')"></b-form-input></li>
         <li class="game game-spacer">&nbsp;</li>
         <li class="game game-bottom ">{{quarterfinals[2].away_player.name}} 
-            <b-form-input type="number" v-model="quarterfinals[2].away_score" v-on:change="updateScore(1)"></b-form-input></li>
+            <b-form-input type="number" v-model="quarterfinals[2].away_score" v-on:change="updateScore(2, 'quarter')"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
         
         <li class="game game-top ">{{quarterfinals[3].home_player.name}} 
-            <b-form-input type="number" v-model="quarterfinals[3].home_score" v-on:change="updateScore(1)"></b-form-input></li>
+            <b-form-input type="number" v-model="quarterfinals[3].home_score" v-on:change="updateScore(2, 'quarter')"></b-form-input></li>
         <li class="game game-spacer">&nbsp;</li>
         <li class="game game-bottom ">{{quarterfinals[3].away_player.name}} 
-            <b-form-input type="number" v-model="quarterfinals[3].away_score" v-on:change="updateScore(1)"></b-form-input></li>
+            <b-form-input type="number" v-model="quarterfinals[3].away_score" v-on:change="updateScore(2, 'quarter')"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
     </ul>
@@ -40,20 +40,20 @@
         <li class="spacer">&nbsp;</li>
         
         <li class="game game-top winner">{{semifinals[0].home_player.name}} 
-            <b-form-input type="number" v-model="semifinals[0].home_score" v-on:change="updateScore(0)"></b-form-input>
+            <b-form-input type="number" v-model="semifinals[0].home_score" v-on:change="updateScore(0, 'semi')"></b-form-input>
         </li>
         <li class="game game-spacer">&nbsp;</li>
         <li class="game game-bottom ">{{semifinals[0].away_player.name}} 
-            <b-form-input type="number" v-model="semifinals[0].away_score" v-on:change="updateScore(0)"></b-form-input></li>
+            <b-form-input type="number" v-model="semifinals[0].away_score" v-on:change="updateScore(0, 'semi')"></b-form-input></li>
 
         <li class="spacer">&nbsp;</li>
         
         <li class="game game-top ">{{semifinals[1].home_player.name}} 
-            <b-form-input type="number" v-model="semifinals[1].home_score" v-on:change="updateScore(1)"></b-form-input>
+            <b-form-input type="number" v-model="semifinals[1].home_score" v-on:change="updateScore(1, 'semi')"></b-form-input>
         </li>
         <li class="game game-spacer">&nbsp;</li>
         <li class="game game-bottom winner">{{semifinals[1].away_player.name}} 
-            <b-form-input type="number" v-model="semifinals[1].away_score" v-on:change="updateScore(1)"></b-form-input>
+            <b-form-input type="number" v-model="semifinals[1].away_score" v-on:change="updateScore(1, 'semi')"></b-form-input>
         </li>
 
         <li class="spacer">&nbsp;</li>
@@ -84,8 +84,56 @@ export default {
     }
   },
     methods: {
-        updateScore(index){
-            if (TournamentHandler.validateScore(this.semifinals[index])){
+        updateScore(index, type){
+            if (type === 'semi'){
+                if (TournamentHandler.validateScore(this.semifinals[index])){
+                    if (index === 0){
+                        if (this.semifinals[index].home_score > this.semifinals[index].away_score){
+                            this.final.home = this.semifinals[index].home_player.name;
+                     }
+                     else{
+                         this.final.home = this.semifinals[index].away_player.name;
+                     }
+                  }
+                  else{
+                      if (this.semifinals[index].home_score > this.semifinals[index].away_score){
+                          this.final.away = this.semifinals[index].home_player.name;
+                      }
+                      else{
+                          this.final.away = this.semifinals[index].away_player.name;
+                       }
+                   }
+             }
+            } else{
+                if (TournamentHandler.validateScore(this.quarterfinals[index])){
+                    let semiIndex = 0;
+                    if (index > 1){
+                        semiIndex = 1;
+                    }
+
+                    if (index % 2 === 0){
+                        if (this.quarterfinals[index].home_score > this.quarterfinals[index].away_score){
+                            this.semifinals[semiIndex].home_player = this.quarterfinals[index].home_player
+                     }
+                     else{
+                         this.semifinals[semiIndex].home_player = this.quarterfinals[index].away_player
+                     }
+                    }
+                    else{
+                        if (this.quarterfinals[index].home_score > this.quarterfinals[index].away_score){
+                            this.semifinals[semiIndex].away_player = this.quarterfinals[index].home_player
+                     }
+                     else{
+                         this.semifinals[semiIndex].away_player = this.quarterfinals[index].away_player
+                     }
+                    }
+                }
+            }
+            
+        },
+        updateQuarter(index){
+            alert(index);
+            if (TournamentHandler.validateScore(this.quarterfinals[index])){
                 if (index === 0){
                     if (this.semifinals[index].home_score > this.semifinals[index].away_score){
                         this.final.home = this.semifinals[index].home_player.name;
@@ -104,6 +152,7 @@ export default {
                 }
             }
         }
+
     },
     mounted() {
         if (TournamentHandler.getFinals().length > 2){
